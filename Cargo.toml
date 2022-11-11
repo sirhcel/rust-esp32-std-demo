@@ -26,7 +26,8 @@ debug = true # Symbols are nice and they don't increase the size on Flash
 opt-level = "z"
 
 [features]
-default = ["experimental"]
+# FIMXE: Do not enable MQTT PSK by default.
+default = ["experimental", "mqtt-psk"]
 
 # Enable this feature for the build to use the PlatformIO tooling instead of the native ESP-IDF tooling under the hood
 pio = ["esp-idf-sys/pio"]
