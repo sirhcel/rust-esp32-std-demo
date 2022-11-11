@@ -60,6 +60,9 @@ ip101 = []
 # Enable this feature in case you have an SPI W5500 Ethernet adapter
 w5500 = []
 
+# Enable this feature for experimental PSK support for MQTT
+mqtt-psk = []
+
 experimental = ["esp-idf-svc/experimental", "embedded-svc/experimental"]
 
 [dependencies]
@@ -78,6 +81,7 @@ mipidsi = "0.5"
 ssd1306 = "0.7"
 epd-waveshare = "0.5.0"
 smol = "1.2"
+default-env = "0.1.1"
 
 [build-dependencies]
 embuild = { version = "0.30.4", features = ["elf"] }

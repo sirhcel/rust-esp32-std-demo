@@ -99,6 +99,16 @@ const SSID: &str = env!("RUST_ESP32_STD_DEMO_WIFI_SSID");
 #[cfg(not(feature = "qemu"))]
 const PASS: &str = env!("RUST_ESP32_STD_DEMO_WIFI_PASS");
 
+#[cfg(feature = "mqtt-psk")]
+const MQTT_URL: &str = default_env::default_env!(
+    "RUST_ESP32_STD_DEMO_MQTT_URL",
+    "mqtts://broker.emqx.io:8883"
+);
+#[cfg(feature = "mqtt-psk")]
+const PSK_KEY: &[u8] = include_bytes!(env!("RUST_ESP32_STD_DEMO_MQTT_PSK_KEY_FILE"));
+#[cfg(feature = "mqtt-psk")]
+const PSK_HINT: &str = env!("RUST_ESP32_STD_DEMO_MQTT_PSK_HINT");
+
 #[cfg(esp32s2)]
 include!(env!("EMBUILD_GENERATED_SYMBOLS_FILE"));
 
@@ -615,15 +625,23 @@ fn test_eventloop() -> Result<(EspBackgroundEventLoop, EspBackgroundSubscription
 fn test_mqtt_client() -> Result<EspMqttClient<ConnState<MessageImpl, EspError>>> {
     info!("About to start MQTT client");
 
+    #[cfg(feature = "mqtt-psk")]
+    let psk = PskConfiguration {
+        key: PSK_KEY,
+        hint: PSK_HINT,
+    };
+
     let conf = MqttClientConfiguration {
         client_id: Some("rust-esp32-std-demo"),
+        #[cfg(not(feature = "mqtt-psk"))]
         crt_bundle_attach: Some(esp_idf_sys::esp_crt_bundle_attach),
+        #[cfg(feature = "mqtt-psk")]
+        psk: Some(psk),
 
         ..Default::default()
     };
 
-    let (mut client, mut connection) =
-        EspMqttClient::new_with_conn("mqtts://broker.emqx.io:8883", &conf)?;
+    let (mut client, mut connection) = EspMqttClient::new_with_conn(MQTT_URL, &conf)?;
 
     info!("MQTT client started");
 
