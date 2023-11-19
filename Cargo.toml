@@ -10,6 +10,12 @@ repository = "https://github.com/ivmarkov/rust-esp32-std-demo"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 
+[package.metadata.espflash]
+# Use a larger app partition by default with cargo-espflash (just espflash
+# provides lucky defaults)
+partition_table = "partitions.csv"
+format = "esp-bootloader"
+
 [profile.release]
 opt-level = "s"
 
