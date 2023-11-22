@@ -90,16 +90,11 @@ fn wifi(
         None
     };
 
-    wifi.set_configuration(&Configuration::Mixed(
+    wifi.set_configuration(&Configuration::Client(
         ClientConfiguration {
             ssid: SSID.into(),
             password: PASS.into(),
             channel,
-            ..Default::default()
-        },
-        AccessPointConfiguration {
-            ssid: "aptest".into(),
-            channel: channel.unwrap_or(1),
             ..Default::default()
         },
     ))?;
