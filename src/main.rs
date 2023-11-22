@@ -1,7 +1,3 @@
-#![allow(unused_imports)]
-#![allow(clippy::single_component_path_imports)]
-//#![feature(backtrace)]
-
 #[cfg(all(feature = "qemu", not(esp32)))]
 compile_error!("The `qemu` feature can only be built for the `xtensa-esp32-espidf` target.");
 
@@ -23,41 +19,18 @@ compile_error!(
 );
 
 use core::cell::RefCell;
-use core::ffi;
-use core::sync::atomic::*;
-
-use std::fs;
-use std::io::{Read as _, Write as _};
-use std::net::{TcpListener, TcpStream, ToSocketAddrs};
-use std::os::fd::{AsRawFd, IntoRawFd};
-use std::path::PathBuf;
-use std::sync::{Condvar, Mutex};
-use std::{env, sync::Arc, thread, time::*};
+use std::{env, thread, time::*};
 
 use anyhow::{bail, Result};
 
-use async_io::{Async, Timer};
-use esp_idf_svc::http::server::{EspHttpConnection, Request};
-use esp_idf_svc::io::Write;
 use log::*;
 
-use esp_idf_svc::sys::EspError;
-
-use esp_idf_svc::hal::adc;
-use esp_idf_svc::hal::delay;
-use esp_idf_svc::hal::gpio;
-use esp_idf_svc::hal::i2c;
 use esp_idf_svc::hal::peripheral;
 use esp_idf_svc::hal::prelude::*;
-use esp_idf_svc::hal::spi;
 
 use esp_idf_svc::eventloop::*;
 use esp_idf_svc::ipv4;
-use esp_idf_svc::mqtt::client::*;
 use esp_idf_svc::ping;
-use esp_idf_svc::sntp;
-use esp_idf_svc::systime::EspSystemTime;
-use esp_idf_svc::timer::*;
 use esp_idf_svc::wifi::*;
 
 const SSID: &str = env!("RUST_ESP32_STD_DEMO_WIFI_SSID");
