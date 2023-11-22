@@ -1,24 +1,3 @@
-#[cfg(all(feature = "qemu", not(esp32)))]
-compile_error!("The `qemu` feature can only be built for the `xtensa-esp32-espidf` target.");
-
-#[cfg(all(feature = "ip101", not(esp32)))]
-compile_error!("The `ip101` feature can only be built for the `xtensa-esp32-espidf` target.");
-
-#[cfg(all(feature = "kaluga", not(esp32s2)))]
-compile_error!("The `kaluga` feature can only be built for the `xtensa-esp32s2-espidf` target.");
-
-#[cfg(all(feature = "ttgo", not(esp32)))]
-compile_error!("The `ttgo` feature can only be built for the `xtensa-esp32-espidf` target.");
-
-#[cfg(all(feature = "heltec", not(esp32)))]
-compile_error!("The `heltec` feature can only be built for the `xtensa-esp32-espidf` target.");
-
-#[cfg(all(feature = "esp32s3_usb_otg", not(esp32s3)))]
-compile_error!(
-    "The `esp32s3_usb_otg` feature can only be built for the `xtensa-esp32s3-espidf` target."
-);
-
-use core::cell::RefCell;
 use std::{env, thread, time::*};
 
 use anyhow::{bail, Result};
@@ -35,10 +14,6 @@ use esp_idf_svc::wifi::*;
 
 const SSID: &str = env!("RUST_ESP32_STD_DEMO_WIFI_SSID");
 const PASS: &str = env!("RUST_ESP32_STD_DEMO_WIFI_PASS");
-
-thread_local! {
-    static TLS: RefCell<u32> = RefCell::new(13);
-}
 
 fn main() -> Result<()> {
     esp_idf_svc::sys::link_patches();
